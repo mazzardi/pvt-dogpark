@@ -19,20 +19,11 @@ public interface DogParkRepository extends CrudRepository<DogParkDAO, Integer> {
 
 	public List<DogParkDAO> findByName(String name);
 
-	@Query("FROM DogParkDAO WHERE (6373 * acos (cos ( radians(?1) )* cos( radians( latitude ) )* cos( radians( longitude ) - radians(?2) )+ sin ( radians(?1) )* sin( radians( latitude ) )))"
-			+ " < ?3 ")
-
-	// "FROM DogPark"
-	// +" WHERE (6371392.896 * acos(cos(radians(?1))*cos(radians(latitude))"
-	// + "*cos(radians(longitude)-radians(?2)
-	// )+sin(radians(?1))*sin(radians(latitude))))"
-	// + " WHERE 2 * 3961 * asin(sqrt(power((sin(radians((latitude - ?1) / 2))), 2)"
-	// + " + cos(radians(?1)) * cos(radians(latitude)) *
-	// power((sin(radians((longitude - ?2) / 2))) , 2) ))"
-	// + " WHERE (3959 *acos(cos(radians(?1)) * cos(radians(latitude)) *
-	// cos(radians(longitude) - radians(?2)) + sin(radians(?1)) *
-	// sin(radians(latitude))))"
-	// + " < ?3")
-	List<DogParkDAO> findByPosition(Double latitude2, Double longitude2, Double distance2);
+	@Query("FROM DogParkDAO WHERE "
+			+ "(6371392.896 * acos(cos(radians(:latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(latitude))))"
+			+ " < :distance ORDER BY "
+			+ "(6371392.896 * acos(cos(radians(:latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(latitude))))"
+			+ " DESC")
+	List<DogParkDAO> findByPositionWithinDistance(Double latitude, Double longitude, Double distance);
 
 }

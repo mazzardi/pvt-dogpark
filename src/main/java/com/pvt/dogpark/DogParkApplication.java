@@ -25,35 +25,4 @@ public class DogParkApplication {
 		SpringApplication.run(DogParkApplication.class, args);
 	}
 
-	
-	
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
-	}
-
-	@Bean
-	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-		return args -> {
-			Quote quote = restTemplate.getForObject(
-					"https://gturnquist-quoters.cfapps.io/api/random", Quote.class);
-			System.out.println(quote.toString()); //log.info(quote.toString());
-		};
-	}
-
-	@GetMapping("/hello")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Hello %s!", name);
-	}
-
-	@GetMapping("/goodbye")
-	public String goodbye(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Goodbye %s!", name);
-	}
-
-	@GetMapping("/Ciao")
-	public String ciao(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Ciao %s!", name);
-	}
-
 }

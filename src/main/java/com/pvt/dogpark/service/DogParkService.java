@@ -32,7 +32,7 @@ public class DogParkService {
 	}
 
 	public Optional<List<DogParkDTO>> findByDistance(Double latitude, Double longitude, Double distance) {
-		var result = repository.findByPosition(latitude, longitude, distance);
+		var result = repository.findByPositionWithinDistance(latitude, longitude, distance);
 		return buildOptional(result);
 	}
 
