@@ -16,6 +16,11 @@ public class DogParkController {
 	@Autowired
 	private DogParkService service;
 
+	@GetMapping(path = "/count")
+	public ResponseEntity<?> count(){
+		return ResponseEntity.ok(service.count());
+	}
+	
 	@GetMapping(path = "/find", params = "all")
 	public ResponseEntity<?> findAll() {
 		var result = service.findAll();

@@ -17,6 +17,10 @@ public class DogParkService {
 	@Autowired
 	private DogParkRepository repository;
 
+	public Long count() {
+		return repository.count();
+	}
+	
 	public Optional<List<DogParkDTO>> findAll() {
 		var result = repository.findAll();
 		return buildOptional(result);

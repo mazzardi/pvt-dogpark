@@ -5,17 +5,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.pvt.dogpark.dao.DogDAO;
+import com.pvt.dogpark.dao.UserDAO;
 import com.pvt.dogpark.dto.DogDTO;
 import com.pvt.dogpark.repository.DogRepository;
+
+import lombok.val;
 
 @Service
 public class DogService {
 
 	@Autowired
 	private DogRepository repository;
+
+	@Autowired
+	private JwtUserDetailsService userService;
 
 	public Optional<List<DogDTO>> findAll() {
 		var result = repository.findAll();
@@ -52,6 +59,11 @@ public class DogService {
 	}
 
 	public String save(DogDTO dog) {
+		val owner = userService.findByName(dog.getOwner());
+		if (owner.isEmpty()) {
+			throw new UsernameNotFoundException("Owner not found with username: " + dog.getOwner());
+		}
+
 		repository.save(convertToDAO(dog));
 		return "Dog registered";
 	}
@@ -67,10 +79,10 @@ public class DogService {
 	}
 
 	private DogDAO convertToDAO(DogDTO dog) {
-		return new DogDAO(0L, dog.getName(), dog.getOwner());
+		return new DogDAO(0L, dog.getName(), dog.getOwner(),null);
 	}
 
-	private DogDTO convertToDTO(DogDAO dog) {
+	public DogDTO convertToDTO(DogDAO dog) {
 		return new DogDTO(dog.getName(), dog.getOwner());
 	}
 

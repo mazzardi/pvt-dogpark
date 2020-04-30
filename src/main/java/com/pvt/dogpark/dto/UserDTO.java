@@ -1,5 +1,7 @@
 package com.pvt.dogpark.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +16,6 @@ public class UserDTO {
 
 	private String username;
 	private String password;
-
+	private List<DogDTO> dogs;
+	
 }
