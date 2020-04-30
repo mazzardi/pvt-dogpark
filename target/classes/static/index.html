@@ -1,0 +1,64 @@
+<!
+<!doctype html> 
+2 <html lang="en"> 
+3 <head> 
+4 <meta charset="utf-8" /> 
+5 <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+6 <title>Demo</title> 
+7 <meta name="description" content="" /> 
+8 <meta name="viewport" content="width=device-width" /> 
+9 <base href="/" /> 
+10 <link rel="stylesheet" type="text/css" 
+11     href="/webjars/bootstrap/css/bootstrap.min.css" /> 
+12 <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script> 
+13 <script type="text/javascript" 
+14     src="/webjars/bootstrap/js/bootstrap.min.js"></script> 
+15 </head> 
+16 <body> 
+17     <h1>Login</h1> 
+18     <div class="container unauthenticated"> 
+19         <div> 
+20             With GitHub: <a href="/oauth2/authorization/github">click here</a> 
+21         </div> 
+22         <div> 
+23             With Google: <a href="/oauth2/authorization/google">click here</a> 
+24         </div> 
+25     </div> 
+26     <div class="container authenticated" style="display: none"> 
+27         Logged in as: <span id="user"></span> 
+28         <div> 
+29             <button onClick="logout()" class="btn btn-primary">Logout</button> 
+30         </div> 
+31     </div> 
+32     <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script> 
+33     <script type="text/javascript"> 
+34           $.ajaxSetup({ 
+35             beforeSend : function(xhr, settings) { 
+36               if (settings.type == 'POST' || settings.type == 'PUT' 
+37                   || settings.type == 'DELETE') { 
+38                 if (!(/^http:.*/.test(settings.url) || /^https:.*/ 
+39                     .test(settings.url))) { 
+40                   // Only send the token to relative URLs i.e. locally. 
+41                   xhr.setRequestHeader("X-XSRF-TOKEN", Cookies 
+42                       .get('XSRF-TOKEN')); 
+43                 } 
+44               } 
+45             } 
+46           }); 
+47           $.get("/user", function(data) { 
+48               $("#user").html(data.name); 
+49               $(".unauthenticated").hide(); 
+50               $(".authenticated").show(); 
+51           }); 
+52           var logout = function() { 
+53             $.post("/logout", function() { 
+54               $("#user").html(''); 
+55               $(".unauthenticated").show(); 
+56               $(".authenticated").hide(); 
+57             }) 
+58             return true; 
+59           } 
+60         </script> 
+61 </body> 
+62 </html> 
+>

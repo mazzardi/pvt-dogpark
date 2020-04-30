@@ -1,8 +1,8 @@
 package com.pvt.dogpark.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pvt.dogpark.dao.UserDAO;
-import com.pvt.dogpark.dto.DogDTO;
 import com.pvt.dogpark.dto.UserDTO;
 import com.pvt.dogpark.repository.UserRepository;
 
@@ -31,6 +30,21 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Autowired
 	private DogService dogService;
 
+	public Optional<List<UserDTO>> findAll() {
+		List<UserDAO> daoUsers = repository.findAll();
+		List<UserDTO> dtoUsers = new ArrayList<>();
+
+		for (UserDAO daoUser : daoUsers) {
+			var dtoUser = new UserDTO();
+			dtoUser.setUsername(daoUser.getUsername());
+			var daoDogs = daoUser.getDogs();
+			var dtoDogs = dogService.convertToDto(daoDogs);
+			dtoUser.setDogs(dtoDogs);
+			dtoUsers.add(dtoUser);
+		}
+		return Optional.of(dtoUsers);
+	}
+
 	public Optional<UserDTO> findByName(String username) {
 		val daoUser = repository.findByUsername(username);
 		if (daoUser == null) {
@@ -39,11 +53,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 		var dtoUser = new UserDTO();
 		dtoUser.setUsername(daoUser.getUsername());
 		val daoDogs = daoUser.getDogs();
-		var dtoDogs = daoDogs.stream()
-				.map(dogService::convertToDTO)
-				.collect(Collectors.toList());
-		// dtoDogs = new ArrayList<>();
-		// dtoDogs.add(new DogDTO("Muffin", "Mattias"));
+		var dtoDogs = dogService.convertToDto(daoDogs);
+		// var dtoDogs = daoDogs.stream()
+//				.map(dogService::convertToDTO)
+//				.collect(Collectors.toList());
 		dtoUser.setDogs(dtoDogs);
 		return Optional.of(dtoUser);
 	}

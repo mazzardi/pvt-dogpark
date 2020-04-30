@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.pvt.dogpark.dao.DogDAO;
-import com.pvt.dogpark.dao.UserDAO;
 import com.pvt.dogpark.dto.DogDTO;
 import com.pvt.dogpark.repository.DogRepository;
 
@@ -23,6 +23,9 @@ public class DogService {
 
 	@Autowired
 	private JwtUserDetailsService userService;
+
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public Optional<List<DogDTO>> findAll() {
 		var result = repository.findAll();
@@ -68,22 +71,30 @@ public class DogService {
 		return "Dog registered";
 	}
 
-	private Optional<List<DogDTO>> buildOptional(List<DogDAO> list) {
-		if (list.isEmpty()) {
+	private Optional<List<DogDTO>> buildOptional(List<DogDAO> dogs) {
+		if (dogs.isEmpty()) {
 			return Optional.empty();
 		}
-		var result = list.stream()
-				.map(this::convertToDTO)
-				.collect(Collectors.toList());
-		return Optional.of(result);
+		return Optional.of(convertToDto(dogs));
 	}
 
 	private DogDAO convertToDAO(DogDTO dog) {
-		return new DogDAO(0L, dog.getName(), dog.getOwner(),null);
+		return modelMapper.map(dog, DogDAO.class);
+	}
+
+	public List<DogDAO> convertToDAO(List<DogDTO> dogs) {
+		return dogs.stream()
+				.map(this::convertToDAO)
+				.collect(Collectors.toList());
 	}
 
 	public DogDTO convertToDTO(DogDAO dog) {
-		return new DogDTO(dog.getName(), dog.getOwner());
+		return modelMapper.map(dog, DogDTO.class);
 	}
 
+	public List<DogDTO> convertToDto(List<DogDAO> dogs) {
+		return dogs.stream()
+				.map(this::convertToDTO)
+				.collect(Collectors.toList());
+	}
 }

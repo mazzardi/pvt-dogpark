@@ -16,6 +16,12 @@ public class UserControll {
 	@Autowired
 	JwtUserDetailsService userService;
 	
+	@GetMapping(path = "/find", params = "all")
+	public ResponseEntity<?> findAll() {
+		var result = userService.findAll();
+		return ResponseEntity.of(result);
+	}
+	
 	@GetMapping(path = "/find", params = "name")
 	public ResponseEntity<?> findByName(@RequestParam String name) {
 		var result = userService.findByName(name);

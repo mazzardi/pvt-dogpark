@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class DogParkService {
 	@Autowired
 	private DogParkRepository repository;
 
+	@Autowired
+	ModelMapper modelMapper;
+	
 	public Long count() {
 		return repository.count();
 	}
@@ -51,10 +55,7 @@ public class DogParkService {
 	}
 
 	private DogParkDTO convertToDTO(DogParkDAO dogpark) {
-		return new DogParkDTO(dogpark.getLatitude(),
-				dogpark.getLongitude(),
-				dogpark.getName(),
-				dogpark.getDescription());
+			return modelMapper.map(dogpark, DogParkDTO.class);
 	}
 
 }

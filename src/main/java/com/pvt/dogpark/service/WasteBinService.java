@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,27 +12,40 @@ import com.pvt.dogpark.dao.WasteBinDAO;
 import com.pvt.dogpark.dto.WasteBinDTO;
 import com.pvt.dogpark.repository.WasteBinRepository;
 
+import lombok.val;
+
 @Service
 public class WasteBinService {
 
 	@Autowired
-	private WasteBinRepository repository;
+	private WasteBinRepository wasteBinRepository;
 
-	public Long count() {
-		return repository.count();
-	}
+	@Autowired
+	private ModelMapper modelMapper;
+
 	
+//	public WasteBinService() {
+//		modelMapper.createTypeMap(WasteBinDAO.class, WasteBinDTO.class);
+//		modelMapper.createTypeMap(WasteBinDTO.class, WasteBinDAO.class);
+//	}
+	
+	public Long count() {
+		return wasteBinRepository.count();
+	}
+
 	public Optional<List<WasteBinDTO>> findAll() {
-		var result = repository.findAll();
+		var result = wasteBinRepository.findAll();
 		return buildOptional(result);
 	}
 
 	public Optional<WasteBinDAO> findById(Long id) {
-		return repository.findById(id);
+		return wasteBinRepository.findById(id);
 	}
 
-	public Optional<List<WasteBinDTO>> findByDistance(Double latitude, Double longitude, Double distance) {
-		var result = repository.findByPositionWithinDistance(latitude, longitude, distance);
+	public Optional<List<WasteBinDTO>> findByDistance(	Double latitude,
+														Double longitude,
+														Double distance) {
+		var result = wasteBinRepository.findByPositionWithinDistance(latitude, longitude, distance);
 		return buildOptional(result);
 	}
 
@@ -39,15 +53,14 @@ public class WasteBinService {
 		if (list.isEmpty()) {
 			return Optional.empty();
 		}
-		var result = list.stream()
-				.map(this::convertToDTO)
+		val result = list.stream()
+				.map(this::convertToDto)
 				.collect(Collectors.toList());
 		return Optional.of(result);
 	}
 
-	private WasteBinDTO convertToDTO(WasteBinDAO wastebin) {
-		return new WasteBinDTO(wastebin.getLatitude(),
-				wastebin.getLongitude());
+	private WasteBinDTO convertToDto(WasteBinDAO wastebin) {
+		return modelMapper.map(wastebin, WasteBinDTO.class);
 	}
-
+	
 }
