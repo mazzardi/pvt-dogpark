@@ -1,6 +1,6 @@
 # pvt-dogpark
 
-GET https://pvt-dogpark.herokuapp.com/find?all   
+GET https://pvt-dogpark.herokuapp.com/dogpark/find?all  
 
 /find?id=xxx  
 
