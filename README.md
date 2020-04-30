@@ -17,3 +17,16 @@ response-format: JSON
         "name": "Varpaängen",
         "description": "Hundrastområde. \\nVarpaängen, norr om varvet."
         }
+
+##So you want to register a profile
+https://pvt-dogpark.herokuapp.com/authenticate
+
+then send like this in json format
+
+
+ {
+ "username":"xxxxx",
+ "password":"yyyyy"
+ }       
+
+mind that everyting will be lowercase
