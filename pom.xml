@@ -116,18 +116,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>14</source>
-					<target>14</target>
-				</configuration>
-			</plugin>
-		</plugins>
 
-		<!-- <extensions> <extension> <groupId>ar.com.synergian</groupId> <artifactId>wagon-git</artifactId> 
-			<version>0.2.5</version> </extension> </extensions> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+<!--  
+		<extensions>
+			<extension>
+				<groupId>ar.com.synergian</groupId>
+				<artifactId>wagon-git</artifactId>
+				<version>0.2.5</version>
+			</extension>
+		</extensions>
+-->
+>>>>>>> refs/remotes/origin/master
 	</build>
 
 	<!-- s <repositories> <repository> <id>spring-releases</id> <url>https://repo.spring.io/libs-release</url> 
