@@ -136,7 +136,7 @@
 			</extension>
 		</extensions>
 -->
->>>>>>> refs/remotes/origin/master
+
 	</build>
 
 	<!-- s <repositories> <repository> <id>spring-releases</id> <url>https://repo.spring.io/libs-release</url> 
