@@ -17,6 +17,15 @@ response-format: JSON
         "name": "Varpaängen",
         "description": "Hundrastområde. \\nVarpaängen, norr om varvet."
         }
+        
+## User requests
+
+Initital URL https://pvt-dogpark.herokuapp.com/user
+
+GET: https://pvt-dogpark.herokuapp.com/user/find?all - find all users in database
+GET: https://pvt-dogpark.herokuapp.com/user/find?name=xxxx - find a specific user
+
+response-format: JSON
 
 ## So you want to register a profile
 https://pvt-dogpark.herokuapp.com/authenticate
